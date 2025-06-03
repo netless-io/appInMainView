@@ -1,25 +1,23 @@
 # app-in-mainview-plugin
 
- [中文文档](https://github.com/netless-io/appInMainView/blob/main/README.zh-cn.md)
-
-The plug-in based on [@netless/window-manager](https://www.npmjs.com/package/@netless/window-manager) multi-window mode, the app window (courseware, plug-in) are integrated into the main window, The app window can be hidden or displayed along with the page switch of the main whiteboard.
+该插件基于 [@netless/window-manager](https://www.npmjs.com/package/@netless/window-manager) 的多窗口模式, 把app窗口(课件、插件)集成到主窗口中, app窗口可以随着主白板的页面切换而隐藏或显示.
 
 ![Image](https://github.com/user-attachments/assets/a4970bc1-a0a1-4c7d-885b-d4f3313fe8b3)
 
-## Plugin Usage
+## 插件用法
 
-### Installation
+### 安装
 
 ```bash
 npm install @netless/app-in-mainview-plugin
 ```
 
-### Reference for access methods
+### 接入方式参考
 
-#### fastboard(with fastboard)
+#### fastboard(直接对接fastboard)
 ```js
 
-// Interface with fastboard-react
+// 对接 fastboard-react
 import { useFastboard, Fastboard } from "@netless/fastboard-react";
 
 const app = useFastboard(() => ({
@@ -32,8 +30,8 @@ const app = useFastboard(() => ({
     managerConfig: {
       ...
     },
-    // Enable the appInMainViewPlugin plugin 
-    // The default UI is enabled by default. If you need to customize the UI, you can pass "enableDefaultUI: false"
+    // 启用appInMainViewPlugin插件,
+    // 默认启用默认UI, 如果需要自定义UI, 可以传入enableDefaultUI: false
     enableAppInMainViewPlugin: true || {
         enableDefaultUI:  true,
         language: "en",
@@ -41,7 +39,7 @@ const app = useFastboard(() => ({
     }
   }));
 
-// Interface with fastboard 
+// 对接 fastboard
 import { createFastboard, createUI } from "@netless/fastboard";
 
 const fastboard = await createFastboard({
@@ -54,8 +52,8 @@ const fastboard = await createFastboard({
     managerConfig: {
       ...
     },
-    // Enable the appInMainViewPlugin plugin 
-    // The default UI is enabled by default. If you need to customize the UI, you can pass "enableDefaultUI: false"
+    // 启用appInMainViewPlugin插件,
+    // 默认启用默认UI, 如果需要自定义UI, 可以传入enableDefaultUI: false
     enableAppInMainViewPlugin: true || {
         enableDefaultUI:  true,
         language: "en",
@@ -64,7 +62,7 @@ const fastboard = await createFastboard({
   });
 ```
 
-#### Multiple Windows(with window-manager)
+#### 多窗口(直接对接window-manager)
 ```js
 
 import '@netless/window-manager/dist/style.css';
@@ -87,29 +85,29 @@ if (manager) {
     });
 }
 ```
-> **Note** The css file ``import '@netless/app-in-mainview-plugin/dist/style.css`` needs to be introduced in the project; 
+> **注意** 项目中需要引入css文件 `import '@netless/app-in-mainview-plugin/dist/style.css';`
 
 
-## Call Introduction
+## 调用介绍
 
-### Initialize the parameter configuration of the method
+### 初始化方法参数配置
 ``getInstance(wm: WindowManager, options: AppInMainViewOptions)``
-- wm: `` WindowManager``. An instance object of Windows Manager。
-- options?: ``AppInMainViewOptions``. Configuration parameters. They can be left empty. If left empty, the default configuration will be used. The configuration is as follows. 
+- wm: `` WindowManager``。WindowManager的实例对象。
+- options?: 配置参数. 可以为空, 为空则使用默认配置, 配置如下.
     ```typescript
         export type AppInMainViewOptions = {
-            /** Whether to enable the default UI */
+            /** 是否启用默认UI */
             enableDefaultUI?: boolean;
-            /** ui container */
+            /** ui容器 */
             containerUI?: HTMLDivElement;
-            /** Whether only the hidden courseware is displayed */
+            /** 是否只显示隐藏的课件 */
             onlyShowHidden?: boolean;
-            /** Language */
+            /** 语言 */
             language?: Language;
-            /** Language */
+            /** 主题 */
             theme?: 'light' | 'dark';
         }
-        //   Default configuration parameters
+        //  默认配置参数
         const DefaultAppInMainViewPluginOptions = {
             enableDefaultUI: true,
             onlyShowHidden: false,
@@ -117,32 +115,32 @@ if (manager) {
             theme: 'light',
         };
     ```
-- logger?: ``Logger``. Not required. Configure the log printer object. If not filled in, the default output will be in the local console. If it is necessary to upload the log to the specified server, manual configuration is required.
-    >If it is necessary to upload to the whiteboard log server, the logger on room can be configured to this project. ``logger: room.logger``
+- logger?: Logger; 非必填, 配置日志打印器对象. 不填写默认在本地console输出, 如果需要把日志上传到指定server, 则需要手动配置.
+    >如需要上传到白板日志服务器,可以把room上的logger配置到该项目。``logger: room.logger``
 
-### api Introduction
+### api介绍
 
 ```typescript
 export type AppInMainViewInstance = {
-    /** Current Manager instance **/
+    /** 当前管理器实例 **/
     readonly currentManager?: AppInMainViewManager;
-    /** The list of apps visible on the current page */
+    /** 当前页面可见的app列表 */
     readonly currentPageVisibleApps?: Set<AppId>;
-    /** The list of apps on the current page */
+    /** 当前页面的app列表 */
     readonly currentPageApps?: Map<AppId, AppStatus>;
-    /** Destroy */
+    /** 销毁 */
     readonly destroy: () => void;
-    /** Add listeners */
+    /** 添加监听器 */
     readonly addListener: (eventName: PublicEvent, callback: PublicCallback<PublicEvent>) => void;
-    /** Remove the listener */
+    /** 移除监听器 */
     readonly removeListener: (eventName: PublicEvent, callback: PublicCallback<PublicEvent>) => void;
-    /** Hide the specified courseware */
+    /** 隐藏指定课件 */
     readonly hideApp: (appId: AppId) => void;
-    /** Display the specified courseware */
+    /** 显示指定课件 */
     readonly showApp: (appId: AppId) => void;
-    /** Display all courseware on the current page */
+    /** 显示当前页面所有课件 */
     readonly showCurrentPageApps: () => void;
-    /** Hide all courseware on the current page */
+    /** 隐藏当前页面所有课件 */
     readonly hiddenCurrentPageApps: () => void;
 }
 
@@ -158,15 +156,14 @@ appInMainViewPlugin.hiddenCurrentPageApps();
 appInMainViewPlugin.destroy();
 ```
 
-### Introduction to Front-End Debugging
-During the integration process, if you want to understand and track the internal status of the plugin, you can view the internal data through the following several console commands.
+### 前端调试介绍
+对接过程中如果想了解和跟踪插件内部状态,可以通过以下几个控制台指令,查看内部数据.
 ```js
 const appInMainViewPlugin = await AppInMainViewPlugin.getInstance(...)
-appInMainViewPlugin.currentManager  //  can see the package version number, internal state, etc
+appInMainViewPlugin.currentManager  // 可以查看到包版本号,内部状态等
 ```
-
-## Customize appMeun UI
-1. Hide the default UI and configure the ui container
+## 自定义 appMeun UI
+1. 隐藏默认UI和配置ui容器
 ```js
 {
     enableDefaultUI:  false,
@@ -174,15 +171,15 @@ appInMainViewPlugin.currentManager  //  can see the package version number, inte
     ...
 }
 ```
-2. Obtain the app data on the current page in the initialization state
+2. 初始化状态下获取当前页面中app数据
 ```js
 appInMainViewPlugin.currentPageApps;
 appInMainViewPlugin.currentPageVisibleApps;
 ```
-2. Listen for changes in appMeun
+2. 监听appMeun变化
 ```js
 appInMainViewPlugin.addListener('appMenuChange', (appMeun) => {
-  // todo upate UI
+  // todo 更新UI
 })
 ```
-For specific reference: [appMeun](https://github.com/netless-io/appInMainView/blob/main/src/componet/AppMenu.ts)
+具体参考:[appMeun](https://github.com/netless-io/appInMainView/blob/main/src/componet/AppMenu.ts)
