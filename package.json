@@ -1,0 +1,49 @@
+{
+  "name": "@netless/app-in-mainview-plugin",
+  "version": "0.0.7",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/app-in-mainview-plugin.js",
+  "module": "./dist/app-in-mainview-plugin.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "vite --force",
+    "types:bundler": "tsc --emitDeclarationOnly",
+    "build:bundler": "vite build --config vite.config.bundler.js && yarn types:bundler",
+    "build": "cross-env NODE_ENV=production tsc && yarn build:bundler",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "@netless/window-manager": "^1.0.3",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@types/lodash": "^4.14.202",
+    "cross-env": "^7.0.3",
+    "less": "^4.2.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
+    "white-web-sdk": "^2.16.53",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "eslint": "^8.57.0"
+  },
+  "peerDependencies": {
+    "@netless/window-manager": ">=1.0.3",
+    "white-web-sdk": ">= 2.16.52"
+  },
+  "dependencies": {
+    "eventemitter2": "^6.4.9",
+    "lodash": "^4.17.21"
+  },
+  "directories": {
+    "example": "example"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "hqer",
+  "license": "MIT"
+}
