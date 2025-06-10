@@ -273,6 +273,9 @@ export class AppInMainViewManager {
   private minimizeBtnClickHandler = (e:MouseEvent | TouchEvent) => {
     e.stopPropagation();
     e.stopImmediatePropagation();
+    if (this.wm.readonly) { 
+      return;
+    }
     const target = this.getTargetParent(e.target as HTMLElement);
     if (target) {
       const id = target.getAttribute('data-tele-box-i-d');

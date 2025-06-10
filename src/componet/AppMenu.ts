@@ -40,6 +40,9 @@ export class AppMenu {
   private containerClickHandler = (e: MouseEvent | TouchEvent) => {
     e.stopPropagation();
     e.stopImmediatePropagation();
+    if (this.manager.control.wm.readonly) {
+      return;
+    }
     const isShowMenuView = getComputedStyle(this.menuView).display === 'flex';
     if (isShowMenuView) {
       this.menuView.style.display = 'none';
@@ -122,11 +125,20 @@ export class AppMenu {
     this.bindContainer();
   };
 
+  private onFullscreenChangeHandler = (fullscreen: boolean) => {
+    if (fullscreen) {
+      this.container.style.display = 'none';
+    } else {
+      this.container.style.display = 'block';
+    }
+  };
+
   observe() {
     this.manager.control.publicEventEmitter.on('appMenuChange', this.appMenuChangeHandler);
     this.manager.control.wm.emitter.on('prefersColorSchemeChange', this.onPrefersColorSchemeChangeHandler);
     this.manager.control.wm.emitter.on('onMainViewMounted', this.onMainViewMountedHandler);
     this.manager.control.wm.emitter.on('onMainViewRebind', this.onMainViewRebindHandler);
+    this.manager.control.wm.emitter.on('fullscreenChange', this.onFullscreenChangeHandler);
   }
   
   unobserve(){
@@ -134,6 +146,7 @@ export class AppMenu {
     this.manager.control.wm.emitter.off('prefersColorSchemeChange', this.onPrefersColorSchemeChangeHandler);
     this.manager.control.wm.emitter.off('onMainViewMounted', this.onMainViewMountedHandler);
     this.manager.control.wm.emitter.off('onMainViewRebind', this.onMainViewRebindHandler);
+    this.manager.control.wm.emitter.off('fullscreenChange', this.onFullscreenChangeHandler);
   }
 
   private createItem(appId: AppId, app: AppValue){
@@ -190,13 +203,16 @@ export class AppMenu {
   private updateMenuView(apps: Map<AppId, AppValue>){
     let isActiveShowAll = false;
     let isActiveHidAll = false;
-    const items: HTMLDivElement[] = [];
-    apps.forEach((app, appId) => {
-      if (app.status === 'visible') {
+    const currentPageApps = this.manager.control.getCurrentPageApps();
+    currentPageApps.forEach((status) => {
+      if (status === 'visible') {
         isActiveHidAll = true;
       } else {
         isActiveShowAll = true;
       }
+    });
+    const items: HTMLDivElement[] = [];
+    apps.forEach((app, appId) => {
       items.push(this.createItem(appId, app));
     });
     const showAllItem = this.createShowBtn();
