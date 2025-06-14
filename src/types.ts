@@ -21,21 +21,14 @@ export type Logger = {
     readonly error: (...messages: any[]) => void;
 }
 
-export type CollectorOptions = {
-    /** 同步间隔 */
-    syncInterval?: number;
-}
-
 export type AppInMainViewOptions = {
     /** 是否启用默认UI */
     enableDefaultUI?: boolean;
-    /** ui容器 */
-    containerUI?: HTMLDivElement;
     /** 是否只显示隐藏的课件 */
     onlyShowHidden?: boolean;
-    /** 语言 */
+    /** 语言, 默认为'en' */
     language?: Language;
-    /** 主题 */
+    /** 主题, 默认为'light' */
     theme?: 'light' | 'dark';
 }
 

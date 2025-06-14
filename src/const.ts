@@ -10,7 +10,7 @@ if (typeof window !== 'undefined') {
   (window as { __netlessUA?: string }).__netlessUA = str;
 }
 
-export const DefaultAppInMainViewPluginOptions: Required<Omit<AppInMainViewOptions, 'containerUI'>> = {
+export const DefaultAppInMainViewPluginOptions: Required<AppInMainViewOptions> = {
   enableDefaultUI: true,
   onlyShowHidden: false,
   language: 'en',

@@ -90,7 +90,7 @@ if (manager) {
 > **Note** The css file ``import '@netless/app-in-mainview-plugin/dist/style.css`` needs to be introduced in the project; 
 
 
-## Call Introduction
+## Introduction to the Calling Method
 
 ### Initialize the parameter configuration of the method
 ``getInstance(wm: WindowManager, options: AppInMainViewOptions)``
@@ -100,13 +100,11 @@ if (manager) {
         export type AppInMainViewOptions = {
             /** Whether to enable the default UI */
             enableDefaultUI?: boolean;
-            /** ui container */
-            containerUI?: HTMLDivElement;
             /** Whether only the hidden courseware is displayed */
             onlyShowHidden?: boolean;
-            /** Language */
+            /** Language, The default is 'en'. */
             language?: Language;
-            /** Language */
+            /** theme, The default is 'light'. */
             theme?: 'light' | 'dark';
         }
         //   Default configuration parameters
@@ -166,12 +164,10 @@ appInMainViewPlugin.currentManager  //  can see the package version number, inte
 ```
 
 ## Customize appMeun UI
-1. Hide the default UI and configure the ui container
+1. Hide the default UI
 ```js
 {
-    enableDefaultUI:  false,
-    containerUI: customContainerUI as HTMLDivElement,
-    ...
+    enableDefaultUI:  false
 }
 ```
 2. Obtain the app data on the current page in the initialization state

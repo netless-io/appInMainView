@@ -98,13 +98,11 @@ if (manager) {
         export type AppInMainViewOptions = {
             /** 是否启用默认UI */
             enableDefaultUI?: boolean;
-            /** ui容器 */
-            containerUI?: HTMLDivElement;
             /** 是否只显示隐藏的课件 */
             onlyShowHidden?: boolean;
-            /** 语言 */
+            /** 语言, 默认为'en' */
             language?: Language;
-            /** 主题 */
+            /** 主题, 默认为'light' */
             theme?: 'light' | 'dark';
         }
         //  默认配置参数
@@ -163,12 +161,9 @@ const appInMainViewPlugin = await AppInMainViewPlugin.getInstance(...)
 appInMainViewPlugin.currentManager  // 可以查看到包版本号,内部状态等
 ```
 ## 自定义 appMeun UI
-1. 隐藏默认UI和配置ui容器
-```js
+1. 隐藏默认UI
 {
-    enableDefaultUI:  false,
-    containerUI: customContainerUI as HTMLDivElement,
-    ...
+    enableDefaultUI:  false
 }
 ```
 2. 初始化状态下获取当前页面中app数据
